@@ -1,18 +1,14 @@
 
 ## GEOCODING FOR LIMA CITY STREETS ##
 
-AddressesRaw = read.csv("C:/Users/escobed2/Downloads/GeocodingData/DrugPricesData.csv", stringsAsFactors = T)
+## Settings
+install.packages("ggmap") #install it if you don;t have it (duh!)
+library(ggmap)
 
-AddressUnique = AddressesRaw[!duplicated(AddressesRaw$id), ]
-
-myvars = names(AddressesRaw) %in% c("DIRECCION", "id") 
-
-AddressSubset = AddressUnique[myvars]
+setwd("YourWorkingDirectory") # set your working directory
+AddressesRaw = read.csv("GeocodingData.csv", stringsAsFactor = T) # call the *.csv file
 
 ## GEOCODING ##
-
-#install.packages("ggmap")
-library(ggmap)
 
 # Getting the address right: creating a data frame of address & id
 
