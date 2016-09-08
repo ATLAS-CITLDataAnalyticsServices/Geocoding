@@ -19,15 +19,15 @@ library(ggmap)
 address_ordered = AddressSubset[order(AddressSubset$id),] 
 address = paste(AddressSubset$DIRECCION, " LIMA, PERU", sep = ",")
 
-# define a function that will process googles server responses for us.
+# define a function that will process Google server responses for us.
 getGeoDetails <- function(address){   
-  #use the gecode function to query google servers
+  # use the gecode function to query Google servers
   geo_reply = geocode(address, output='all', messaging=TRUE, override_limit=TRUE)
-  #now extract the bits that we need from the returned list
+  # extract what we need from the returned list
   answer <- data.frame(lat=NA, long=NA, accuracy=NA, formatted_address=NA, address_type=NA, status=NA)
   answer$status <- geo_reply$status
   
-  #if we are over the query limit - want to pause for an hour
+  #create a one hour pause if we are over the query limit
   while(geo_reply$status == "OVER_QUERY_LIMIT"){
     print("OVER QUERY LIMIT - Pausing for 1 hour at:") 
     time <- Sys.time()
@@ -53,15 +53,15 @@ getGeoDetails <- function(address){
   return(answer)
 }
 
-#initialise a dataframe to hold the results
+#initialize a dataframe to hold the results
 geocoded <- data.frame()
 # find out where to start in the address list (if the script was interrupted before):
 startindex <- 1
 
-# Start the geocoding process - address by address. geocode() function takes care of query speed limit.
+# Start the geocoding process address by address.
 for (ii in seq(startindex, length(address))){
   print(paste("Working on index", ii, "of", length(address)))
-  #query the google geocoder - this will pause here if we are over the limit.
+  #query the Google geocoder
   result = getGeoDetails(address[ii]) 
   print(result$status)     
   result$index <- ii
